@@ -84,7 +84,7 @@ app.MapGet("/todo/{id}", async (int id, IRepository<Todo> _todoRepository, ILogg
 
 app.MapPost("/todo", async ([FromBody] TodoDTO todo, IRepository<Todo> _todoRepository, ILoggerFactory _loggerFactory, IMapper _mapper) =>
 {
-    if (todo == null) return Results.BadRequest("No ToDo item.");
+    if (todo == null || todo.Id < 1) return Results.BadRequest("No ToDo item.");
 
     var logger = _loggerFactory.CreateLogger<Todo>();
     logger.LogInformation("Adding Todo item");
@@ -95,7 +95,7 @@ app.MapPost("/todo", async ([FromBody] TodoDTO todo, IRepository<Todo> _todoRepo
 
 app.MapPut("/todo/{id}", async (int id, [FromBody] TodoDTO todo, IRepository<Todo> _todoRepository, ILoggerFactory _loggerFactory, IMapper _mapper) =>
 {
-    if (id < 1 || todo == null) return Results.BadRequest("Unknown item, or update incorrect");
+    if (id < 1 || todo == null || id != todo.Id) return Results.BadRequest("Unknown item, or update incorrect");
 
     var logger = _loggerFactory.CreateLogger<Todo>();
     logger.LogInformation("Updating Todo item");
