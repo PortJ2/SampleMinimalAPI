@@ -84,7 +84,7 @@ app.MapGet("/todo/{id}", async (int id, IRepository<Todo> _todoRepository, ILogg
 
 app.MapPost("/todo", async ([FromBody] TodoDTO todo, IRepository<Todo> _todoRepository, ILoggerFactory _loggerFactory, IMapper _mapper) =>
 {
-    if (todo == null || todo.Id < 1) return Results.BadRequest("No ToDo item.");
+    if (todo == null || todo.Item == null) return Results.BadRequest("No ToDo item.");
 
     var logger = _loggerFactory.CreateLogger<Todo>();
     logger.LogInformation("Adding Todo item");
